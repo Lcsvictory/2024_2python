@@ -5,9 +5,12 @@
 import datetime
 import os
 
-
-#dFormat = "%Y-%m-%d %H:%M:%S.%f"
 dFormat = "%Y-%m-%d %H:%M:%S"
+
+mypath = "c:\\room1_202001098"
+myfile = "list.txt"
+fullfile = os.path.join(mypath, myfile)
+
 
 def diff_seconds(start, end):
     if not end:
@@ -20,8 +23,27 @@ if __name__ == "__main__":
     if not os.path.isdir(mypath):
         os.mkdir(mypath)
 
-    #파일이 없다면 만들어라.
     room_datas = []
+    
+    #파일이 있으면 기존 내용에 추가해야하니까. 
+    def read_file(fullfile, room_datas):
+        try:
+            with open(fullfile, "r", encoding="utf-8") as f:
+                while line := f.readline():
+                    temp = line.strip().split("|")
+                    temp[1] = datetime.datetime.strptime(temp[1],dFormat)
+                    if temp[2]:
+                        temp[2] = datetime.datetime.strptime(temp[2], dFormat)
+                    temp_dict = {
+                        'room_number' : temp[0],
+                        'start' : temp[1],
+                        'end' : temp[2]
+                    }
+                    room_datas.append(temp_dict)
+        except Exception as e:
+            print(e)
+            print("기존 데이터가 존재하지 않습니다.")
+    
     while True:
         temp = {}
         room_number = input("강의실 호수:").strip()
@@ -42,6 +64,7 @@ if __name__ == "__main__":
             end = input("종료시간:").strip()
             if not end:#종료시간이 비어있다.
                 end = None
+                break
             elif end: #종료시간이 있다.
                 try:
                     end = datetime.datetime.strptime(end, dFormat)
@@ -63,9 +86,12 @@ if __name__ == "__main__":
     with open(fullfile, "w", encoding="utf-8") as f:
         #파일에 정보를 기록해라.
         for room_data in room_datas:
-            room_number == room_data['room_number']
-            start = room_date['start']
-            if room_date['end']:
-                #추가 
+            room_number = room_data['room_number']
+            start = room_data['start'].strftime(dFormat) #datetime -> str
+            if end := room_data['end']: # 있으면
+                end = end.strftime(dFormat) #datetime -> str
+            else: #없으면 (None이면)
+                end = ""
+            f.write(f"{room_number}|{start}|{end}\n")
 
     
