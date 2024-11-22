@@ -1,6 +1,4 @@
-# week13_01.py
-# id:202001098
-# name:Lee chungseong
+
 '''
 module: datetime
 class:  datetime

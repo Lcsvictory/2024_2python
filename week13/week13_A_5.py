@@ -1,6 +1,3 @@
-# week13_A_5.py
-# id:202001098
-# name:Lee chungseong
 
 import datetime
 

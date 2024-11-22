@@ -1,6 +1,3 @@
-# week13_A_3.py
-# id:202001098
-# name:Lee chungseong
 
 room_datas = []
 while True:

@@ -1,6 +1,3 @@
-# week13_02.py
-# id:202001098
-# name:Lee chungseong
 
 import datetime
 from datetime import datetime as dt
