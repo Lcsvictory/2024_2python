@@ -55,9 +55,9 @@ if __name__ == "__main__":
                     for line in f:
                         split_data = line.strip().split("|")
                         if len(split_data) == 2:
-                            intime = dt.strptime(split_datas[0].strip(), timeformat)
-                            if split_datas[1]:
-                                outtime = dt.strptime(split_datas[1].strip(), timeformat)
+                            intime = dt.datetime.strptime(split_data[0].strip(), timeformat)
+                            if split_data[1]:
+                                outtime = dt.datetime.strptime(split_data[1].strip(), timeformat)
                             else:
                                 outtime = None
                             room.add_timestamp(intime, outtime)
@@ -87,7 +87,7 @@ if __name__ == "__main__":
             try:
                 starttime = input("시작시간:").strip()
                 if starttime:
-                    starttime = dt.strptime(starttime, timeformat)
+                    starttime = dt.datetime.strptime(starttime, timeformat)
                     break
                 else:
                     starttime = gen_intime()
@@ -103,7 +103,7 @@ if __name__ == "__main__":
                 if not stoptime:
                     stoptime = None
                 else:
-                    stoptime = dt.strptime(stoptime, timeformat)
+                    stoptime = dt.datetime.strptime(stoptime, timeformat)
                 break
             except:
                 pass
@@ -115,9 +115,9 @@ if __name__ == "__main__":
         fullfile = os.path.join(mypath, room+".txt")
         
         with open(fullfile, "a", encoding='utf-8') as f:
-            intime = dt.strftime(starttime, timeformat)
+            intime = starttime.strftime(timeformat)
             if stoptime != None:
-                outtime = dt.strftime(stoptime, timeformat)
+                outtime = stoptime.strftime(timeformat)
                 f.write(f"{intime}|{outtime}\n")
             else:
                 f.write(f"{intime}|")
