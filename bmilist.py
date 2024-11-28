@@ -1,4 +1,5 @@
 import userinfo
+import os
 
 mlt = []
 
@@ -109,13 +110,45 @@ def user_info_view():
     else:
         print("상태를 보여줄 회원이 없습니다.")
 
-    
+
+def file_path():
+    mypath = "c:\\2020000"
+    if not os.path.isdir(mypath):
+        os.mkdir(mypath)
+    return f"{os.path.join(mypath, 'bmilist.txt')}"
+
+def write_file():
+    if mlt:
+        with open(file_path(), "w", encoding="utf-8") as f:
+            for user in mlt:
+                f.write(f"{user.uid}|{user.sex}|{user.height}|{user.weight}\n")
+        print(f"{len(mlt)}건의 데이터를 저장했습니다.")
+    else:
+        print("저장할 자료가 없습니다.")
+
+def read_file():
+    if os.path.isfile(file_path()):
+        if len(mlt) == 0:
+            with open(file_path(), "r", encoding="utf-8") as f:
+                while line := f.readline():
+                    user_data = line.strip().split("|")
+                    if len(user_data) == 4:
+                        user = userinfo.UserInfo(user_data[0], user_data[1], float(user_data[2]), float(user_data[3]))
+                        mlt.append(user)
+            print(f"{len(mlt)}건의 데이터를 복원했습니다.")
+            return
+        else:
+            print("기존 자료와의 충돌이 발생할 수 있으므로 복원할 수 없습니다.")
+            return
+    else:
+        print("복원할 데이터가 없습니다.")
+        return
 if __name__ == "__main__" :
     while True:
         sel = select()
 
         if sel == "A":
-            pass
+            read_file()
         elif sel == "B":
             create_user()
         elif sel == "C":
@@ -123,7 +156,7 @@ if __name__ == "__main__" :
         elif sel == "D":
             user_info_view()
         elif sel == "Q":
-            pass
+            write_file()
             break
 
     print("프로그램을 종료합니다.")
